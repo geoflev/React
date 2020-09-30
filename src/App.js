@@ -1,6 +1,25 @@
 import React, { Component } from "react";
 import "./App.css";
 import Person from "./Person/Person";
+//import styled from "styled-components";
+
+//STYLING WITH STYLED-COMPONENTS
+// //inject this func because in the end that `` creates a string
+//and then you create a StyledButton in the DOM
+
+// const StyledButton = styled.button`
+//   background-color: ${(props) => (props.alt ? "red" : "green")};
+//   color: white;
+//   font: inherit;
+//   border: 1px solid black;
+//   padding: 8px;
+//   cursor: pointer;
+
+//   &:hover {
+//     background-color: ${(props) => (props.alt ? "salmon" : "lightgreen")};
+//     color: black;
+//   }
+// `;
 
 class App extends Component {
   state = {
@@ -47,12 +66,19 @@ class App extends Component {
   };
 
   render() {
+    //replaced by styled-components
     const style = {
-      backgroundColor: "blue",
+      backgroundColor: "green",
+      color: "white",
       font: "inherit",
-      border: "1px solid blue",
+      border: "1px solid black",
       padding: "8px",
       cursor: "pointer",
+      //this syntax is possible only with radium
+      ":hover": {
+        backgroundColor: "lightgreen",
+        color: "black",
+      },
     };
 
     let persons = null;
@@ -72,13 +98,35 @@ class App extends Component {
           })}
         </div>
       );
+      //replaced by styled-components
+
+      // style.backgroundColor = "red";
+      // //this syntax is possible only with radium
+      // style[":hover"] = {
+      //   backgroundColor: "salmon",
+      //   color: "black",
+      // };
     }
 
+    //App.css classes
+    const classes = []; // "red bold"
+    if (this.state.persons.length <= 2) {
+      classes.push("red");
+    }
+    if (this.state.persons.length <= 1) {
+      classes.push("bold");
+    }
+
+    //StyleRoot comes from radium to use @media
     return (
       <div className="App">
         <h1>Hi, I'm a React App</h1>
-        <p>This is really working!</p>
-        <button style={style} onClick={this.togglePersonsHandler}>
+        <p className={classes.join(" ")}>This is really working!</p>
+        <button
+          className="button"
+          alt={this.state.showPersons}
+          onClick={this.togglePersonsHandler}
+        >
           Toggle Persons
         </button>
         {persons}
@@ -88,4 +136,5 @@ class App extends Component {
   }
 }
 
+//radium injects additional syntax
 export default App;
