@@ -1,8 +1,7 @@
-import React, { Component } from "react";
-
+import React, { PureComponent } from "react";
 import Person from "./Person/Person";
 
-class Persons extends Component {
+class Persons extends PureComponent {
   // static getDerivedStateFromProps(props, state) {
   //   console.log('[Persons.js] getDerivedStateFromProps');
   //   return state;
@@ -12,10 +11,29 @@ class Persons extends Component {
   //   console.log('[Persons.js] componentWillReceiveProps', props);
   // }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log("[Persons.js] shouldComponentUpdate");
-    return true;
-  }
+  // ******************* IMPORTANT *******************
+  //instead of using shouldComponentUpdate and check if any prop changes
+  //we can replace Component with PureComponent which does it auto
+  // ******************* IMPORTANT *******************
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log("[Persons.js] shouldComponentUpdate");
+  //   // to prevent all lifecycle on Persons been executed when we remove cockpit
+  //   // since removind cockpit doesnt affect Persons (performance)
+
+  //   //this works since we create a new Array persons in App.js
+  //   // if not this !== would always be false since we would compare pointers of the same array
+  //   // used for performance
+  //   if (
+  //     nextProps.persons !== this.props.persons ||
+  //     nextProps.changed !== this.props.changed ||
+  //     nextProps.clicked !== this.props.clicked
+  //   ) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
     console.log("[Persons.js] getSnapshotBeforeUpdate");
@@ -29,6 +47,10 @@ class Persons extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     console.log("[Persons.js] componentDidUpdate");
     console.log(snapshot);
+  }
+
+  componentWillUnmount() {
+    console.log("[Persons.js] componentWillUnmount");
   }
 
   render() {
